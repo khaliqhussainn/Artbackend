@@ -1,12 +1,10 @@
-// const SECRET_KEY = "jnaswxyzuytabcdefopqurastuvghijklmndiuaÂ®@z9ujknwejhyiueywqjhweui";
-
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto"); // Node.js built-in crypto module
 const fs = require("fs");
 const path = require("path");
 
-// Path to store the secret key
-const SECRET_KEY_PATH = path.join(__dirname, "..", "config", "04425ec63ebba1cf24e5b5bf3ae38f3220c873bbce8cc0106ff4a94170b81a5203459bc001e605b195c52eaac15184032eed29f4f505bd96b096f90f9aca3f83");
+// Path to store the secret key - fixing the path
+const SECRET_KEY_PATH = path.join(__dirname, "..", "config", "jwt-secret.key");
 
 // Function to generate a secure random secret key
 const generateSecretKey = () => {
@@ -18,6 +16,7 @@ const getSecretKey = () => {
   try {
     // Try to read existing secret key
     if (fs.existsSync(SECRET_KEY_PATH)) {
+      console.log("Using existing JWT secret key");
       return fs.readFileSync(SECRET_KEY_PATH, "utf8");
     } else {
       // Create directory if it doesn't exist
@@ -28,6 +27,7 @@ const getSecretKey = () => {
       
       // Generate new secret key
       const newSecretKey = generateSecretKey();
+      console.log("Generated new JWT secret key");
       
       // Save the secret key to file
       fs.writeFileSync(SECRET_KEY_PATH, newSecretKey, "utf8");
